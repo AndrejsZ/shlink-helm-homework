@@ -1,0 +1,9 @@
+env:
+  SHLINK_SERVER_URL: "http://s.test"
+  SHLINK_SERVER_API_KEY: "key"
+  SHLINK_SERVER_NAME: "Shlink"
+  SHLINK_SERVER_FORWARD_CREDENTIALS: false
+#service:
+#  type: NodePort
+#  port: 8080
+replicaCount: 1

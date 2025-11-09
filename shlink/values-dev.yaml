@@ -1,0 +1,12 @@
+env:
+  DEFAULT_DOMAIN: "s.test"
+  IS_HTTPS_ENABLED: "false"
+  GEOLITE_LICENSE_KEY: ""
+  INITIAL_API_KEY: "key"
+  DB_DRIVER: "mysql"
+  DB_USER: "shlink"
+  DB_PASSWORD: "shlink"
+  DB_HOST: "mysql-1762704278"
+  DB_PORT: "3306"
+replicaCount: 1
+

@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "shlink.fullname" . }}
+  labels:
+    {{- include "shlink.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "shlink.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "shlink.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "shlink.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- if $.Values.env.DEFAULT_DOMAIN }}
+            - name: "DEFAULT_DOMAIN"
+              value: {{ $.Values.env.DEFAULT_DOMAIN | quote }}
+            {{- end }}
+            {{- if $.Values.env.IS_HTTPS_ENABLED }}
+            - name: "IS_HTTPS_ENABLED"
+              value: {{ $.Values.env.IS_HTTPS_ENABLED | quote }}
+            {{- end }}
+            {{- if $.Values.env.GEOLITE_LICENSE_KEY }}
+            - name: "GEOLITE_LICENSE_KEY"
+              value: {{ $.Values.env.GEOLITE_LICENSE_KEY | quote }}
+            {{- end }}
+            {{- if $.Values.env.INITIAL_API_KEY }}
+            - name: "INITIAL_API_KEY"
+              value: {{ $.Values.env.INITIAL_API_KEY | quote }}
+            {{- end }}
+            {{- if $.Values.env.DB_DRIVER }}
+            - name: "DB_DRIVER"
+              value: {{ $.Values.env.DB_DRIVER | quote }}
+            {{- end }}
+            {{- if $.Values.env.DB_USER }}
+            - name: "DB_USER"
+              value: {{ $.Values.env.DB_USER | quote }}
+            {{- end }}
+            {{- if $.Values.env.DB_PASSWORD }}
+            - name: "DB_PASSWORD"
+              value: {{ $.Values.env.DB_PASSWORD | quote }}
+            {{- end }}
+            {{- if $.Values.env.DB_HOST }}
+            - name: "DB_HOST"
+              value: {{ $.Values.env.DB_HOST | quote }}
+            {{- end }}
+            {{- if $.Values.env.DB_PORT }}
+            - name: "DB_PORT"
+              value: {{ int $.Values.env.DB_PORT | quote }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
