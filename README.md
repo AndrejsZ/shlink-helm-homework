@@ -18,10 +18,21 @@ shlink-ui is deployed as
 cd ./shlink-ui/
 helm install -f values.yaml -f values-dev.yaml shlink-ui .
 ```
+
+The repo is hosted on github and can be referenced as a helm repo like
+```
+$ helm repo add shlink 'https://raw.githubusercontent.com/AndrejsZ/shlink-helm-homework/refs/heads/main/'
+$ helm repo update shlink
+$ helm search repo shlink
+NAME            	CHART VERSION	APP VERSION	DESCRIPTION 
+shlink/shlink   	0.1.0        	4.4        	Shlink chart
+shlink/shlink-ui	0.1.0        	4.5.1      	shlink-ui
+```
 ## Upgrade procedure from 4.4 to 4.6
 
 By default, shlink is installed with image tag 4.4
 shlink can manage the database upgrade process by itself. Set replica count to 1 for upgrade to avoid race condition.
+So, the upgrade might be initiated like so
 ```
 helm upgrade -f values.yaml -f values-dev.yaml --set replicaCount=1 --set image.tag=4.6 shlink ./
 ```
