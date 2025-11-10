@@ -1,0 +1,25 @@
+apiVersion: v1
+entries:
+  shlink:
+  - apiVersion: v2
+    appVersion: "4.4"
+    created: "2025-11-10T16:29:02.32893628+02:00"
+    description: Shlink chart
+    digest: a03297f47969ac814abf5b993a3862ef6c25ade50068e518202647fcadcd26d3
+    name: shlink
+    type: application
+    urls:
+    - shlink-0.1.0.tgz
+    version: 0.1.0
+  shlink-ui:
+  - apiVersion: v2
+    appVersion: 4.5.1
+    created: "2025-11-10T16:29:02.329694058+02:00"
+    description: shlink-ui
+    digest: 186c95fd08683f94c74fb71fd86ed42883d1a3dd277305bc78be0a84867d4352
+    name: shlink-ui
+    type: application
+    urls:
+    - shlink-ui-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-11-10T16:29:02.328184668+02:00"
